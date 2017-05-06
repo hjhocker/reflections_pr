@@ -1,0 +1,11 @@
+version: 0.1
+
+phases:
+  build:
+    commands:
+      - echo Started building on `date`
+      - gradle wrapper
+      - ./gradlew build
+artifacts:
+  files:
+    - ./build/libs/reflections*.jar

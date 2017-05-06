@@ -1,0 +1,62 @@
+buildscript {
+	ext {
+		springBootVersion = '1.4.3.BUILD-SNAPSHOT'
+	}
+	repositories {
+		mavenCentral()
+		maven { url "https://repo.spring.io/snapshot" }
+		maven { url "https://repo.spring.io/milestone" }
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+plugins {
+  id "org.sonarqube" version "2.3"
+}
+
+sonarqube {
+    properties {
+        property "sonar.sourceEncoding", "UTF-8"
+	property "sonar.sources", "src/main/java"
+	property "sonar.scm.provider", "git" 
+
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: "io.spring.dependency-management"
+
+jar {
+	baseName = 'reflections'
+	version = '0.0.1-SNAPSHOT'
+}
+
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+	maven { url "https://repo.spring.io/snapshot" }
+	maven { url "https://repo.spring.io/milestone" }
+}
+
+dependencyManagement {
+    imports {
+        mavenBom 'com.amazonaws:aws-java-sdk-bom:1.10.77'
+    }
+}
+
+dependencies {
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '1.4.0.RELEASE'
+	compile group: 'org.reflections', name: 'reflections', version: '0.9.10'
+	compile group: 'com.opentable.components', name: 'otj-pg-embedded', version: '0.7.1'
+	compile group: 'org.flywaydb', name: 'flyway-core', version: '4.0.3'
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
+	compile group: 'postgresql', name: 'postgresql', version: '9.0-801.jdbc4'
+	compile group: 'com.couchbase.client', name: 'java-client', version: '2.4.4'
+	compile 'com.amazonaws:aws-java-sdk-s3'
+	testCompile 'org.springframework.boot:spring-boot-starter-test'
+}
